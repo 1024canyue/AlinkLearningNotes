@@ -1,10 +1,13 @@
 package quickStart;
 
 import com.alibaba.alink.operator.batch.BatchOperator;
-import com.alibaba.alink.operator.batch.regression.LinearRegPredictBatchOp;
-import com.alibaba.alink.operator.batch.regression.LinearRegTrainBatchOp;
 import com.alibaba.alink.operator.batch.source.MemSourceBatchOp;
+import com.alibaba.alink.pipeline.Pipeline;
+import com.alibaba.alink.pipeline.PipelineModel;
+import com.alibaba.alink.pipeline.regression.LinearRegression;
 import org.apache.flink.types.Row;
+
+import static domain.BasicConstants.MODEL_PATH;
 
 /**
  * @author canyue
@@ -42,27 +45,34 @@ public class BatchTrainingTest {
         trainSet = trainSet.select("x, x*x as x2, gmv");
         predSet = predSet.select("x, x*x as x2");
 
-        //创建一个批处理的线性回归操作
-        LinearRegTrainBatchOp trainer = new LinearRegTrainBatchOp()
+
+        //创建一个批处理的线性回归
+        LinearRegression linearRegression = new LinearRegression()
                 .setFeatureCols("x", "x2")     //特征
-                .setLabelCol("gmv");             //标签
+                .setLabelCol("gmv")             //标签
+                .setPredictionCol("pred");;
 
-        //记得那里看到过 Alink 可以看成 A + Link 其中Link就是可以把各种操作连接(有点像管道，但不是)
-        trainSet.link(trainer);
+        //貌似书本上的写法有点旧，我还是用新的方法吧，这样还比较像SparkML，更习惯
+        //先来一个管道
+        Pipeline trainer = new Pipeline()
+                .add(linearRegression);
 
-        //看来做预测要先创建一个角色
-        LinearRegPredictBatchOp predictor = new LinearRegPredictBatchOp()
-                .setPredictionCol("pred");
+        //通过fit方法可以训练处一个模型
+        PipelineModel model = trainer.fit(trainSet);
 
-        //做预测
-        predictor
-                .linkFrom(trainer, predSet).print();
+        //保存模型
+        model.save(MODEL_PATH  + "quickStart/linearModel.model");
+
+        //预测
+        model
+                .transform(predSet)
+                .print();
 
         /*
-            x|x|x2|pred
-             -|--|----
-             2018|4072324|2142.4048
-             2019|4076361|2682.2263
+            x|x2|pred
+            -|--|----
+            2018|4072324|2142.4048
+            2019|4076361|2682.2263
         */
 
     }
