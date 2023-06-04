@@ -17,10 +17,9 @@ public class ReadAndWriteCsvFileTest {
         csvSourceBatchOp.firstN(10).print();
 
         csvSourceBatchOp
-                .link(
-                        new CsvSinkBatchOp()
-                                .setFilePath(BasicConstants.DATA_PATH + "sinkIris.csv")
-                                .setOverwriteSink(true)
+                .link(new CsvSinkBatchOp()
+                        .setFilePath(BasicConstants.DATA_PATH + "sinkIris.csv")
+                        .setOverwriteSink(true)
                 );
         BatchOperator.execute();
     }
