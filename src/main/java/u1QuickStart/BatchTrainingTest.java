@@ -1,4 +1,4 @@
-package quickStart;
+package u1QuickStart;
 
 import com.alibaba.alink.operator.batch.BatchOperator;
 import com.alibaba.alink.operator.batch.source.MemSourceBatchOp;

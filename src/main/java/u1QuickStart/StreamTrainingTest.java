@@ -1,4 +1,4 @@
-package quickStart;
+package u1QuickStart;
 
 import com.alibaba.alink.operator.stream.StreamOperator;
 import com.alibaba.alink.operator.stream.source.MemSourceStreamOp;

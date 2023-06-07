@@ -1,4 +1,4 @@
-package quickStart
+package u1QuickStart
 
 import com.alibaba.alink.operator.batch.sink.CsvSinkBatchOp
 import com.alibaba.alink.operator.batch.source.CsvSourceBatchOp
