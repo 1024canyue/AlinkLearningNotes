@@ -26,7 +26,7 @@ Alink底层通过Flink Table作为流个批的数据表示，这其实可以通�
 
 以下是批处理任务的DAG
 
-![img](.\README.assets\1680243791127-863a5d40-959b-4cae-88f0-e0c492df80a4.png)
+![img](./README.assets/1680243791127-863a5d40-959b-4cae-88f0-e0c492df80a4.png)
 
 
 
@@ -40,7 +40,7 @@ Alink底层通过Flink Table作为流个批的数据表示，这其实可以通�
 
 以下是流处理任务的DAG
 
-![img](.\README.assets\1680244063370-b9c52273-1a25-4bcd-bb9f-74adfeb48158.png)
+![img](./README.assets/1680244063370-b9c52273-1a25-4bcd-bb9f-74adfeb48158.png)
 
 流处理无需等待上一组件完成，来一条就做一条(这也是与Spark的微批不同的地方)
 
@@ -48,7 +48,7 @@ Alink底层通过Flink Table作为流个批的数据表示，这其实可以通�
 
 Alink支持流批混跑，以下是流批混跑的DAG
 
-![img](.\README.assets\1680244151869-fa0efc2c-0be5-4c1a-8384-c2988a55a32f.png)
+![img](./README.assets/1680244151869-fa0efc2c-0be5-4c1a-8384-c2988a55a32f.png)
 
 当出现流批混跑的情况时，Alink会`先做批理批`，并将批处理的结果作为流处理的一个初始数据，然后进行流处理
 
@@ -70,7 +70,7 @@ Alink支持流批混跑，以下是流批混跑的DAG
 
 以下是它们的UML类图：
 
-![img](.\README.assets\1680244469548-1bd241af-c9d0-4536-8379-694a7d38641a.png)
+![img](./README.assets/1680244469548-1bd241af-c9d0-4536-8379-694a7d38641a.png)
 
 其实也能看出，Alink的数据其实底层用的就是Flink Table Api，而且无论是BatchOperator还是StreamOperator，他们都支持linkxxx()方法。
 
@@ -216,7 +216,7 @@ data
 
 侧输出，看来和Flink一样,一个操作可以有多个输出
 
-<img src=".\README.assets\image-20230607145845162.png" alt="image-20230607145845162" style="zoom:67%;" />
+<img src="./README.assets/image-20230607145845162.png" alt="Flink数据分流" style="zoom:67%;" />
 
 对于多输出，可以使用linkForm将其聚在一起
 
@@ -230,7 +230,7 @@ data
 
 > 如果要在管道中加入分类器，对数据进行类别预测，就涉及模型的训练和预测，这需要分两个步骤完成。所以，管道也会被细分为管道定义与管道模型（PipelineModel）。在管道定义中，每个PipelineStage会按其是否需要进行模型训练，分为估计器（Estimator）和转换器（Transformer）。随后，可以对其涉及模型的部分，即对估计器（Estimator）进行估计，从而得到含有模型的转换器。该转换器被称为Model，并用Model替换相应的估计器，从而每个阶段都可以直接对数据进行处理。我们将该Model称为PipelineModel。
 >
-> ![img](.\README.assets\1680245704450-77feb134-016a-4e05-8590-9fc3e6623412.png)
+> <img src="./README.assets/1680245704450-77feb134-016a-4e05-8590-9fc3e6623412.png" alt="img" style="zoom:80%;" />
 >
 > - 转换器（Transformer）：Pipeline中的处理模块，用于处理Table。输入的是待处理的数据，输出的是处理结果数据。比如，向量归一化是一个常用的数据预处理操作。它就是一个转换器，输入向量数据，输出的数据仍为向量，但是其范数为1。
 > - Model：派生于转换器（Transformer）。其可以存放计算出来的模型，用来进行模型预测。其输入的是预测所需的特征数据，输出的是预测结果数据。
@@ -240,7 +240,7 @@ data
 
 * 定义过程：这时候会将各个操作依次丢进管道，组成管道的执行流程
 * 训练过程：使用fit方法对Pipeline进行训练，生成PipelineModel，此时原Pipeline还没消失，你依旧可以通过对其传入不一样的训练数据，得到另一个PipelineModel
-  * <img src=".\README.assets\image-20230607162828853.png" alt="image-20230607162828853" style="zoom:67%;" />
+  * <img src="./README.assets/image-20230607162828853.png" alt="image-20230607162828853" style="zoom: 80%;" />
 * 数据处理过程：使用训练出的PipelineModel对数据进行转换
 
 
